@@ -109,22 +109,13 @@ public class DumpExtractor {
 		conf.set(KEY_SENTENCE_MODEL, args[3]) ;
 		conf.set(KEY_OUTPUT_DIR, args[4]) ;
 
-		//set a reasonable number of maps. This is going to be ignored for very large inputs (e.g. the en wiki dump) anyway. 
 		conf.setNumMapTasks(16) ;
-		
-		//force one reducer by default. These don't take very long, and multiple reducers would make finalise file functions more complicated.  
 		conf.setNumReduceTasks(1) ;
-
-		//many of our tasks require pre-loading lots of data, may as well reuse this as much as we can.
-		//conf.setNumTasksToExecutePerJvm(-1) ;
-
-		//conf.setInt("mapred.tasktracker.map.tasks.maximum", 2) ;
-		//conf.setInt("mapred.tasktracker.reduce.tasks.maximum", 1) ;
-		
-		//TODO: really don't want this hard coded.
-		conf.set("mapred.child.java.opts", "-Xmx500M -Dapple.awt.UIElement=true") ;
-
-		//conf.setBoolean("mapred.used.genericoptionsparser", true) ;
+		conf.set("mapreduce.map.java.opts", "-Xmx3000m");
+		conf.set("mapreduce.map.memory.mb", "4096");
+		conf.setInt("mapreduce.job.running.map.limit", 16);
+		conf.set("mapreduce.reduce.java.opts", "-Xmx3000m");
+		conf.set("mapreduce.reduce.memory.mb", "4096");
 
 		return conf ;
 	}

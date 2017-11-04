@@ -224,26 +224,22 @@ public class PageSummaryStep extends IterativeStep {
 		in.close() ;
 		
 	}
-	
-	
-	
-	public void finish(RunningJob runningJob) throws IOException {
-		
-		super.finish(runningJob) ;
-	
-		unforwardedCounts = new HashMap<Unforwarded,Long>() ;
 
-		for (Unforwarded u:Unforwarded.values()) {
-			
-			Counters.Counter counter = runningJob.getCounters().findCounter(u) ;
-			if (counter != null)
-				unforwardedCounts.put(u, counter.getCounter()) ;
-			else
-				unforwardedCounts.put(u, 0L) ;
+
+
+	public void finish(RunningJob runningJob) throws IOException {
+
+		super.finish(runningJob);
+
+		unforwardedCounts = new HashMap<Unforwarded, Long>();
+
+		for (Unforwarded u : Unforwarded.values()) {
+			long count = runningJob.getCounters().getCounter(u);
+			unforwardedCounts.put(u, count);
 		}
-		
-		saveUnforwardedCounts() ;
-		
+
+		saveUnforwardedCounts();
+
 	}
 
 }
