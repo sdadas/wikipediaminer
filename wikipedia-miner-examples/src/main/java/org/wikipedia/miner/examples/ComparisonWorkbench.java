@@ -13,6 +13,7 @@ import org.wikipedia.miner.db.WDatabase.DatabaseType;
 import org.wikipedia.miner.model.Wikipedia;
 import org.wikipedia.miner.util.WikipediaConfiguration;
 
+import org.wikipedia.miner.util.config.WikiPaths;
 import weka.classifiers.Classifier;
 import weka.core.Utils;
 
@@ -156,7 +157,7 @@ public class ComparisonWorkbench {
 	
 	public static void main(String args[]) throws Exception {
 
-		File dataDir = new File(args[0]) ;
+		File dataDir = WikiPaths.findWikiDirectory("plwiki");
 		
 		File datasetFile = new File(args[1]) ;
 		int maxRelatedness = Integer.parseInt(args[2]) ;
