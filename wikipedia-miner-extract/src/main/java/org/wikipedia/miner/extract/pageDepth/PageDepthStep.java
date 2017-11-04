@@ -152,21 +152,12 @@ public class PageDepthStep extends IterativeStep {
 
 
 	public void finish(RunningJob runningJob) throws IOException {
-
 		super.finish(runningJob) ;
-
 		counts = new HashMap<Counts,Long>() ;
-
 		for (Counts count:Counts.values()) {
-			
-			Counters.Counter counter = runningJob.getCounters().findCounter(count) ;
-			if (counter != null)
-				counts.put(count, counter.getCounter()) ;
-			else
-				counts.put(count, 0L) ;
+			long value = runningJob.getCounters().getCounter(count);
+			counts.put(count, value) ;
 		}
-
 		saveCounts() ;
-
 	}
 }

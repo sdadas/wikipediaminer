@@ -3,89 +3,92 @@
 <WikipediaLanguageList>
 
 
-        <Language code="en" name="English" localName="English">
+    <Language code="en" name="English" localName="English">
 
-                <RootCategory>Fundamental categories</RootCategory>
-                
-                <DisambiguationCategory>Disambiguation</DisambiguationCategory>
-                
-                <DisambiguationTemplate>disambiguation</DisambiguationTemplate>
-                <DisambiguationTemplate>disambig</DisambiguationTemplate>
-                <DisambiguationTemplate>geodis</DisambiguationTemplate>
-                <DisambiguationTemplate>hndis</DisambiguationTemplate>
-                <DisambiguationTemplate>hospitaldis</DisambiguationTemplate>
-                <DisambiguationTemplate>mathdab</DisambiguationTemplate>
-                <DisambiguationTemplate>mountianindex</DisambiguationTemplate>
-                <DisambiguationTemplate>numberdis</DisambiguationTemplate>
-                <DisambiguationTemplate>roaddis</DisambiguationTemplate>
-                <DisambiguationTemplate>schooldis</DisambiguationTemplate>
-                <DisambiguationTemplate>shipindex</DisambiguationTemplate>
-                <DisambiguationTemplate>SIA</DisambiguationTemplate>
+        <RootCategory>Fundamental categories</RootCategory>
 
-				<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-        </Language>
+        <DisambiguationCategory>Disambiguation</DisambiguationCategory>
 
-	<Language code="pl" name="Polish" localName="Polski">
-		<RootCategory>Kategorie</RootCategory>
+        <DisambiguationTemplate>disambiguation</DisambiguationTemplate>
+        <DisambiguationTemplate>disambig</DisambiguationTemplate>
+        <DisambiguationTemplate>geodis</DisambiguationTemplate>
+        <DisambiguationTemplate>hndis</DisambiguationTemplate>
+        <DisambiguationTemplate>hospitaldis</DisambiguationTemplate>
+        <DisambiguationTemplate>mathdab</DisambiguationTemplate>
+        <DisambiguationTemplate>mountianindex</DisambiguationTemplate>
+        <DisambiguationTemplate>numberdis</DisambiguationTemplate>
+        <DisambiguationTemplate>roaddis</DisambiguationTemplate>
+        <DisambiguationTemplate>schooldis</DisambiguationTemplate>
+        <DisambiguationTemplate>shipindex</DisambiguationTemplate>
+        <DisambiguationTemplate>SIA</DisambiguationTemplate>
 
-		<DisambiguationCategory>Strony ujednoznaczniające</DisambiguationCategory>
+        <RedirectIdentifier>REDIRECT</RedirectIdentifier>
+    </Language>
 
-		<DisambiguationTemplate>ujednoznacznienie</DisambiguationTemplate>
-		<DisambiguationTemplate>inne znaczenia</DisambiguationTemplate>
-		<DisambiguationTemplate>disambig</DisambiguationTemplate>
-		<DisambiguationTemplate>disambigr</DisambiguationTemplate>
+    <Language code="pl" name="Polish" localName="Polski">
 
-		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-	</Language>
+        <RootCategory>Kategorie</RootCategory>
 
-	<Language code="simple" name="Simple English" localName="Simple English">
+        <DisambiguationCategory>Strony ujednoznaczniające</DisambiguationCategory>
 
-		<RootCategory>articles</RootCategory>
+        <DisambiguationTemplate>ujednoznacznienie</DisambiguationTemplate>
+        <DisambiguationTemplate>inne znaczenia</DisambiguationTemplate>
+        <DisambiguationTemplate>disambig</DisambiguationTemplate>
+        <DisambiguationTemplate>disambigr</DisambiguationTemplate>
 
-		<DisambiguationCategory>disambiguation</DisambiguationCategory>
+        <NamespaceAlias from='Plik' to='plik' />
+        <NamespaceAlias from='Kategoria' to='kategoria' />
 
-		<DisambiguationTemplate>disambiguation</DisambiguationTemplate>
-		<DisambiguationTemplate>disambig</DisambiguationTemplate>
-		<DisambiguationTemplate>2CC</DisambiguationTemplate>
-		<DisambiguationTemplate>3CC</DisambiguationTemplate>
-		<DisambiguationTemplate>hndis</DisambiguationTemplate>
-		
-		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-		<RedirectIdentifier>PATRZ</RedirectIdentifier>
+        <RedirectIdentifier>REDIRECT</RedirectIdentifier>
+        <RedirectIdentifier>PATRZ</RedirectIdentifier>
+    </Language>
 
-	</Language>
-	
-	<Language code="de" name="German" localName="Deutsch">
+    <Language code="simple" name="Simple English" localName="Simple English">
 
-		<RootCategory>!Hauptkategorie</RootCategory>
+        <RootCategory>articles</RootCategory>
 
-		<DisambiguationCategory>Begriffsklärung</DisambiguationCategory>
+        <DisambiguationCategory>disambiguation</DisambiguationCategory>
 
-		<DisambiguationTemplate>Begriffsklärung</DisambiguationTemplate>
-		
-		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-		<RedirectIdentifier>WEITERLEITUNG</RedirectIdentifier>
-		
-	</Language>
-        
-     <Language code="es" name="Spanish" localName="Castellano">
+        <DisambiguationTemplate>disambiguation</DisambiguationTemplate>
+        <DisambiguationTemplate>disambig</DisambiguationTemplate>
+        <DisambiguationTemplate>2CC</DisambiguationTemplate>
+        <DisambiguationTemplate>3CC</DisambiguationTemplate>
+        <DisambiguationTemplate>hndis</DisambiguationTemplate>
 
-		<RootCategory>Artículos</RootCategory>
+        <RedirectIdentifier>REDIRECT</RedirectIdentifier>
+    </Language>
 
-		<DisambiguationCategory>Wikipedia:Desambiguación</DisambiguationCategory>
+    <Language code="de" name="German" localName="Deutsch">
 
-		<DisambiguationTemplate>desambiguación</DisambiguationTemplate>
-		<DisambiguationTemplate>des</DisambiguationTemplate>
-		<DisambiguationTemplate>desambiguacion</DisambiguationTemplate>
-		<DisambiguationTemplate>disambig</DisambiguationTemplate>
-		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-		<RedirectIdentifier>des</RedirectIdentifier>
-		<RedirectIdentifier>otros usos</RedirectIdentifier>
-		<RedirectIdentifier>redirige aquí</RedirectIdentifier>
-		<RedirectIdentifier>ico-des</RedirectIdentifier>
-		<RedirectIdentifier>REDIRECCIÓN</RedirectIdentifier>
-		<RedirectIdentifier>REDIRECCION</RedirectIdentifier>
-	</Language>
+        <RootCategory>!Hauptkategorie</RootCategory>
+
+        <DisambiguationCategory>Begriffsklärung</DisambiguationCategory>
+
+        <DisambiguationTemplate>Begriffsklärung</DisambiguationTemplate>
+
+        <RedirectIdentifier>REDIRECT</RedirectIdentifier>
+        <RedirectIdentifier>WEITERLEITUNG</RedirectIdentifier>
+
+    </Language>
+
+    <Language code="es" name="Spanish" localName="Castellano">
+
+        <RootCategory>Artículos</RootCategory>
+
+        <DisambiguationCategory>Wikipedia:Desambiguación</DisambiguationCategory>
+
+        <DisambiguationTemplate>desambiguación</DisambiguationTemplate>
+        <DisambiguationTemplate>des</DisambiguationTemplate>
+        <DisambiguationTemplate>desambiguacion</DisambiguationTemplate>
+        <DisambiguationTemplate>disambig</DisambiguationTemplate>
+        <RedirectIdentifier>REDIRECT</RedirectIdentifier>
+        <RedirectIdentifier>des</RedirectIdentifier>
+        <RedirectIdentifier>otros usos</RedirectIdentifier>
+        <RedirectIdentifier>redirige aquí</RedirectIdentifier>
+        <RedirectIdentifier>ico-des</RedirectIdentifier>
+        <RedirectIdentifier>REDIRECCIÓN</RedirectIdentifier>
+        <RedirectIdentifier>REDIRECCION</RedirectIdentifier>
+    </Language>
 
 
 </WikipediaLanguageList>

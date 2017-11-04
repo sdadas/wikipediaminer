@@ -29,8 +29,6 @@ import org.apache.commons.compress.compressors.CompressorException;
 import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
-import org.apache.tools.bzip2.* ;
-
 /**
  * A {@link WDatabase} for associating page ids with page markup. 
  * 
