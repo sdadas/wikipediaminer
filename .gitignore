@@ -1,3 +1,16 @@
+# Intellij project files
+*.iml
+*.iws
+*.ipr
+*.ids
+.idea
+.pmd.log
+
+# Maven versions plugin backup
+*.versionsBackup
+
+# All target directories
+*/target/**
 /wikipedia-miner-core/target/
 /wikipedia-miner-extract/target/
 /wikipedia-miner-web/target/

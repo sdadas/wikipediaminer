@@ -25,7 +25,18 @@
 				<RedirectIdentifier>REDIRECT</RedirectIdentifier>
         </Language>
 
+	<Language code="pl" name="Polish" localName="Polski">
+		<RootCategory>Kategorie</RootCategory>
 
+		<DisambiguationCategory>Strony ujednoznaczniające</DisambiguationCategory>
+
+		<DisambiguationTemplate>ujednoznacznienie</DisambiguationTemplate>
+		<DisambiguationTemplate>inne znaczenia</DisambiguationTemplate>
+		<DisambiguationTemplate>disambig</DisambiguationTemplate>
+		<DisambiguationTemplate>disambigr</DisambiguationTemplate>
+
+		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
+	</Language>
 
 	<Language code="simple" name="Simple English" localName="Simple English">
 
@@ -40,7 +51,8 @@
 		<DisambiguationTemplate>hndis</DisambiguationTemplate>
 		
 		<RedirectIdentifier>REDIRECT</RedirectIdentifier>
-		
+		<RedirectIdentifier>PATRZ</RedirectIdentifier>
+
 	</Language>
 	
 	<Language code="de" name="German" localName="Deutsch">
