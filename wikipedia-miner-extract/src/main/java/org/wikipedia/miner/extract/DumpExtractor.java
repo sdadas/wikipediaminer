@@ -434,7 +434,8 @@ public class DumpExtractor {
 
 
             finalizePages(stats);
-            finalizeStatistics(stats);
+            finalizeStatistics(stats, new Path(workingDir + "/" + OUTPUT_STATS));
+            finalizeStatistics(stats, new Path(finalDir + "/stats.csv"));
 
             //update progress
             lastCompletedStep = currStep;
@@ -869,9 +870,9 @@ public class DumpExtractor {
         writer.close();
     }
 
-    private void finalizeStatistics(TreeMap<String, Long> stats) throws IOException {
+    private void finalizeStatistics(TreeMap<String, Long> stats, Path path) throws IOException {
 
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(getFileSystem(workingDir).create(new Path(workingDir + "/" + OUTPUT_STATS))));
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(getFileSystem(workingDir).create(path)));
 
         for (Map.Entry<String, Long> e : stats.entrySet()) {
 

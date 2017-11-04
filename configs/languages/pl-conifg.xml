@@ -1,0 +1,55 @@
+<!-- This configuration file specifies properties for a single wikipedia dump -->
+
+
+<wikipediaConfiguration>
+
+    <langCode>pl</langCode>
+    <databaseDirectory>db</databaseDirectory>
+    <dataDirectory>csv</dataDirectory>
+    <defaultTextProcessor>org.wikipedia.miner.util.text.polish.PolishTextProcessor</defaultTextProcessor>
+
+    <minLinksIn>3</minLinksIn>
+    <minSenseProbability>0.01</minSenseProbability>
+    <minLinkProbability>0.005</minLinkProbability>
+    <stopwordFile>pl-stopwords.txt</stopwordFile>
+
+    <databaseToCache priority="space">pageLinksIn</databaseToCache>
+    <databaseToCache priority="space">label</databaseToCache>
+    <articleComparisonDependency>pageLinksIn</articleComparisonDependency>
+
+    <!--
+        A file containing a Weka classifier for generating relatedness measures between articles
+        This must be trained using the same dependencies listed above.If you do not supply one,
+        then article comparisons will be made without machine learning.
+     -->
+    <articleComparisonModel>
+    </articleComparisonModel>
+
+    <!-- A file containing a Weka classifier for disambiguating pairs of labels -->
+    <labelDisambiguationModel>
+    </labelDisambiguationModel>
+
+    <!-- A file containing a Weka classifier for generating relatedness measures between labels -->
+    <labelComparisonModel>
+    </labelComparisonModel>
+
+
+    <!-- A file containing a Weka classifier for performing automatic disambiguation of topics in documents -->
+    <topicDisambiguationModel>
+    </topicDisambiguationModel>
+
+
+    <!-- A file containing a Weka classifier for performing automatic link detection -->
+    <linkDetectionModel>
+    </linkDetectionModel>
+
+
+    <!-- A file containing an Open NLP model for tokenization. If not provided, then a simple rule-based tokenizer will be used -->
+    <tokenModel>
+    </tokenModel>
+
+    <!-- A file containing an Open NLP model for sentence splitting. If not provided, then sentence splitting will not be performed during annotation, etc. -->
+    <sentenceModel>
+    </sentenceModel>
+
+</wikipediaConfiguration>

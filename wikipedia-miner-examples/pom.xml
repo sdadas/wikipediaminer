@@ -14,6 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -25,7 +26,7 @@
         <dependency>
             <groupId>org.wikipedia-miner</groupId>
             <artifactId>wikipedia-miner-core</artifactId>
-            <version>1.2.4</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
   

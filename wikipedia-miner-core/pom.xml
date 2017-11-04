@@ -27,10 +27,19 @@
                             <mainClass>org.wikipedia.miner.util.EnvironmentBuilder</mainClass>
                         </manifest>
                     </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly-core.xml</descriptor>
+                    </descriptors>
                 </configuration>
+                <!-- <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions> -->
             </plugin>
 
             <plugin>

@@ -8,7 +8,12 @@ import org.wikipedia.miner.db.*;
 public class EnvironmentBuilder {
 
 	public static void main(String args[]) throws Exception {
-		
+
+		// Workaround for JDK limits on processing large XML files
+		System.setProperty("entityExpansionLimit", "2147480000");
+		System.setProperty("totalEntitySizeLimit", "2147480000");
+		System.setProperty("jdk.xml.totalEntitySizeLimit", "2147480000");
+
 		if (args.length != 1) {
 			System.out.println("Please specify path to wikipedia configuration file") ;
 			System.exit(1) ;

@@ -30,8 +30,8 @@ import org.apache.commons.compress.compressors.CompressorInputStream;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
 /**
- * A {@link WDatabase} for associating page ids with page markup. 
- * 
+ * A {@link WDatabase} for associating page ids with page markup.
+ *
  * This will throw {@link UnsupportedOperationException}s if any attempt is made to cache this database to memory.
  */
 public class MarkupDatabase extends WDatabase<Integer, String> {
@@ -40,7 +40,7 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
 
 	/**
 	 * Creates or connects to a database, whose name and type will be {@link WDatabase.DatabaseType#markup}.
-	 * 
+	 *
 	 * @param env the WEnvironment surrounding this database
 	 */
 	public MarkupDatabase(WEnvironment env) {
@@ -59,18 +59,18 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
 	public WEntry<Integer,String> deserialiseCsvRecord(CsvRecordInput record) throws IOException {
 		throw new UnsupportedOperationException() ;
 	}
-	
-	@Override 
+
+	@Override
 	public void loadFromCsvFile(File dataFile, boolean overwrite, ProgressTracker tracker) throws IOException  {
 		throw new UnsupportedOperationException() ;
 	}
 
-	
+
 
 	/**
 	 * Builds the persistent markup database from an XML dump
-	 * 
-	 * @param dataFile the XML file containing a wikipedia dump 
+	 *
+	 * @param dataFile the XML file containing a wikipedia dump
 	 * @param overwrite true if the existing database should be overwritten, otherwise false
 	 * @param tracker an optional progress tracker (may be null)
 	 * @throws IOException if there is a problem reading or deserialising the given data file.
@@ -81,7 +81,7 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
 //            overwrite=true;
 		if (exists() && !overwrite)
 			return ;
-		
+
 		if (tracker == null) tracker = new ProgressTracker(1, MarkupDatabase.class) ;
 		tracker.startTask(dataFile.length(), "Loading " + getName() + " database") ;
 
@@ -90,14 +90,14 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
 		Integer currId = null ;
 		String currMarkup = null ;
 		StringBuffer characters = new StringBuffer() ;
-		
+
 		InputStream reader ;
 		 CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder()
                 .onMalformedInput(CodingErrorAction.REPORT)
                 .onUnmappableCharacter(CodingErrorAction.REPORT);
-                 
+
 		if (dataFile.getName().endsWith(".bz2")){
-                 
+
                     FileInputStream fin=new FileInputStream(dataFile);
                     BufferedInputStream bis=new BufferedInputStream(fin);
                     CompressorInputStream input=new CompressorStreamFactory().createCompressorInputStream(bis);
@@ -107,9 +107,10 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
                 }
 		XMLInputFactory xmlStreamFactory = XMLInputFactory.newInstance() ;
 		CountingInputStream countingReader = new CountingInputStream(reader) ;
-               // To work around a bug in XERCES (XERCESJ-1257), we assume the XML is always UTF8, so we simply provide reader.
-		XMLStreamReader xmlStreamReader = xmlStreamFactory.createXMLStreamReader(new InputStreamReader(countingReader,decoder)) ;
-                System.out.println("Parser class: " + xmlStreamReader.getClass().toString());
+
+        // To work around a bug in XERCES (XERCESJ-1257), we assume the XML is always UTF8, so we simply provide reader.
+		XMLStreamReader xmlStreamReader = xmlStreamFactory.createXMLStreamReader(new InputStreamReader(countingReader,decoder));
+        System.out.println("Parser class: " + xmlStreamReader.getClass().toString());
 
 		int pageTotal = 0 ;
 		long charTotal = 0 ;
@@ -132,8 +133,8 @@ public class MarkupDatabase extends WDatabase<Integer, String> {
 				switch(resolveDumpTag(xmlStreamReader.getLocalName())) {
 
 				case id:
-					//only take the first id (there is a 2nd one for the revision) 
-					if (currId == null) 
+					//only take the first id (there is a 2nd one for the revision)
+					if (currId == null)
 						currId = Integer.parseInt(characters.toString().trim()) ;
 					break ;
 				case text:
