@@ -54,6 +54,7 @@
          {"name": "id", "type": ["int", "null"]},
          {"name": "title", "type": ["string", "null"]},
          {"name": "namespace", "type": ["int", "null"]},
+         {"name": "isDisambiguation", "type": "boolean"},
          {"name": "lastEdited", "type": ["long","null"]},
          {
           "name": "sentenceSplits", 
@@ -155,6 +156,32 @@
           "type": {
             "type": "array",
             "items": "LabelSense"
+          }
+        }
+      ]
+    },
+    
+    {
+      "type": "record",
+      "name": "LabelOccurrences",
+      "namespace": "org.wikipedia.miner.extract.model.struct",
+      "fields": [
+      	{"name": "linkDocCount", "type": "int"},
+      	{"name": "linkOccCount", "type": "int"},
+        {"name": "textDocCount", "type": "int"},
+      	{"name": "textOccCount", "type": "int"}
+      ]
+    },
+    {
+      "type": "record",
+      "name": "PrimaryLabels",
+      "namespace": "org.wikipedia.miner.extract.model.struct",
+      "fields": [
+      	{
+          "name": "labels", 
+          "type": {
+            "type": "array",
+            "items": "string"
           }
         }
       ]
