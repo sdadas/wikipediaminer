@@ -363,7 +363,13 @@ public class Disambiguator {
 			}
 		}
 
-		
+
+		if(ambigRefs.size() == 0) {
+			// nothing to do here
+			Logger.getLogger(Disambiguator.class).warn("No ambiguous refs for article: " + article.getTitle());
+			return;
+		}
+
 		// use all terms as context
 		Context context = getContext(article, snippetLength, rc) ;
 		

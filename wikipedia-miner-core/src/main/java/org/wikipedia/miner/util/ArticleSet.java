@@ -160,7 +160,7 @@ public class ArticleSet extends ArrayList<Article> {
 				double fineProgress = (double)size()/size ;
 			
 				if (roughProgress > fineProgress) {
-					System.err.println("ArticleSet | Warning : we have exhausted " + df.format(roughProgress) + " of the available pages and only gathered " + df.format(fineProgress*100) + " of the articles needed.") ;
+					System.err.println("ArticleSet | Warning : we have exhausted " + df.format(roughProgress) + " of the available pages and only gathered " + df.format(fineProgress) + " of the articles needed.") ;
 					lastWarningProgress = roughProgress ;
 				}
 			}

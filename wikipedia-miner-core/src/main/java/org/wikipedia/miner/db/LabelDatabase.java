@@ -77,7 +77,7 @@ public class LabelDatabase extends WDatabase<String, DbLabel> {
 		super(
 				env, 
 				DatabaseType.label, 
-				"label" + tp.getName(), 
+				"label" + tp.getName(),
 				new StringBinding(), 
 				new RecordBinding<DbLabel>() {
 					public DbLabel createRecordInstance() {

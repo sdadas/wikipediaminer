@@ -34,7 +34,7 @@ import com.sleepycat.je.OperationStatus;
  * A wrapper for {@link Database} that adds the ability to load itself from data files and selectively caching itself to memory.
  *
  * It is unlikely that you will want to use this class directly.
- * 
+ *
  * @param <K> the key type
  * @param <V> the value type
  */
@@ -43,15 +43,15 @@ public abstract class WDatabase<K,V> {
 	/**
 	 * Database types
 	 */
-	public enum DatabaseType  
+	public enum DatabaseType
 	{
 		/**
-		 * Associates page ids with the title, type and generality of the page. 
+		 * Associates page ids with the title, type and generality of the page.
 		 */
-		page, 
+		page,
 
 		/**
-		 * Associates String labels with the statistics about the articles (senses) these labels could refer to 
+		 * Associates String labels with the statistics about the articles (senses) these labels could refer to
 		 */
 		label,
 
@@ -79,7 +79,7 @@ public abstract class WDatabase<K,V> {
 		/**
 		 * Associates integer ids with the ids of articles that link to it, and the sentence indexes where these links are found
 		 */
-		pageLinksIn, 
+		pageLinksIn,
 
 		/**
 		 * Associates integer ids with the ids of articles that link to it
@@ -90,7 +90,7 @@ public abstract class WDatabase<K,V> {
 		/**
 		 * Associates integer ids with the ids of articles that it links to, and the sentence indexes where these links are found
 		 */
-		pageLinksOut, 
+		pageLinksOut,
 
 		/**
 		 * Associates integer ids with the ids of articles that it links to
@@ -105,22 +105,22 @@ public abstract class WDatabase<K,V> {
 		/**
 		 * Associates integer ids of categories with the ids of categories it belongs to
 		 */
-		categoryParents, 
+		categoryParents,
 
 		/**
 		 * Associates integer ids of articles with the ids of categories it belongs to
 		 */
-		articleParents, 
+		articleParents,
 
 		/**
 		 * Associates integer ids of categories with the ids of categories that belong to it
 		 */
-		childCategories, 
+		childCategories,
 
 		/**
 		 * Associates integer ids of categories with the ids of articles that belong to it
 		 */
-		childArticles, 
+		childArticles,
 
 		/**
 		 * Associates integer id of redirect with the id of its target
@@ -138,7 +138,7 @@ public abstract class WDatabase<K,V> {
 		sentenceSplits,
 
 		/**
-		 * Associates integer id of page with a {@link DbTranslations}. 
+		 * Associates integer id of page with a {@link DbTranslations}.
 		 */
 		translations,
 
@@ -187,7 +187,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Creates or connects to a database, whose name will match the given {@link WDatabase.DatabaseType}
-	 * 
+	 *
 	 * @param env the WEnvironment surrounding this database
 	 * @param type the type of database
 	 * @param keyBinding a binding for serialising and deserialising keys
@@ -207,12 +207,12 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Creates or connects to a database with the given name.
-	 * 
+	 *
 	 * @param env the WEnvironment surrounding this database
 	 * @param type the type of database
-	 * @param name the name of the database 
+	 * @param name the name of the database
 	 * @param keyBinding a binding for serialising and deserialising keys
-	 * @param valueBinding a binding for serialising and deserialising values 
+	 * @param valueBinding a binding for serialising and deserialising values
 	 */
 	public WDatabase(WEnvironment env, DatabaseType type, String name, EntryBinding<K> keyBinding, EntryBinding<V> valueBinding) {
 
@@ -228,7 +228,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns the type of this database
-	 * 
+	 *
 	 * @return the type of this database
 	 */
 	public DatabaseType getType() {
@@ -237,7 +237,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns the name of this database
-	 * 
+	 *
 	 * @return the name of this database
 	 */
 	public String getName() {
@@ -246,7 +246,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns the number of entries in the database
-	 * 
+	 *
 	 * @return the number of entries in the database
 	 */
 	public long getDatabaseSize() {
@@ -255,7 +255,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns the number of entries that have been cached to memory
-	 * 
+	 *
 	 * @return the number of entries that have been cached to memory
 	 */
 	public long getCacheSize() {
@@ -270,7 +270,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns true if this has been cached to memory, otherwise false
-	 * 
+	 *
 	 * @return true if this has been cached to memory, otherwise false
 	 */
 	public boolean isCached() {
@@ -279,7 +279,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Returns whether this has been cached for speed or memory efficiency
-	 * 
+	 *
 	 * @return whether this has been cached for speed or memory efficiency
 	 */
 	public CachePriority getCachePriority() {
@@ -288,7 +288,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * true if there is a persistent database underlying this, otherwise false
-	 * 
+	 *
 	 * @return true if there is a persistent database underlying this, otherwise false
 	 */
 	public boolean exists() {
@@ -303,7 +303,7 @@ public abstract class WDatabase<K,V> {
 	/**
 	 * Retrieves the value associated with the given key, either from the persistent database, or from memory if
 	 * the database has been cached. This will return null if the key is not found, or has been excluded from the cache.
-	 * 
+	 *
 	 * @param key the key to search for
 	 * @return the value associated with the given key, or null if none exists.
 	 */
@@ -321,9 +321,9 @@ public abstract class WDatabase<K,V> {
 
 			DatabaseEntry dbValue = new DatabaseEntry() ;
 
-			OperationStatus os = db.get(null, dbKey, dbValue, LockMode.READ_COMMITTED) ; 
+			OperationStatus os = db.get(null, dbKey, dbValue, LockMode.READ_COMMITTED) ;
 
-			if (!os.equals(OperationStatus.SUCCESS)) 
+			if (!os.equals(OperationStatus.SUCCESS))
 				return null ;
 			else
 				return valueBinding.entryToObject(dbValue) ;
@@ -332,7 +332,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Deserialises a CSV record.
-	 * 
+	 *
 	 * @param record the CSV record to deserialise
 	 * @return the key,value pair encoded within the record
 	 * @throws IOException if there is a problem decoding the record
@@ -341,7 +341,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Decides whether an entry should be cached to memory or not, and optionally alters values before they are cached.
-	 * 
+	 *
 	 * @param e the key,value pair to be filtered
 	 * @param conf a configuration containing options for how the database is to be cached
 	 * @param validIds the set of article ids that are valid and should be cached
@@ -352,7 +352,7 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Builds the persistent database from a file.
-	 * 
+	 *
 	 * @param dataFile the file (typically a CSV file) containing data to be loaded
 	 * @param overwrite true if the existing database should be overwritten, otherwise false
 	 * @param tracker an optional progress tracker (may be null)
@@ -404,12 +404,12 @@ public abstract class WDatabase<K,V> {
 
 	/**
 	 * Selectively caches records from the database to memory, for much faster lookup.
-	 * 
+	 *
 	 * @param conf a configuration specifying how items should be cached.
-	 * @param validIds an optional set of article ids that should be cached. Any information about articles not in this list will be excluded from the cache. 
+	 * @param validIds an optional set of article ids that should be cached. Any information about articles not in this list will be excluded from the cache.
 	 * @param tracker an optional progress tracker
-	 * @throws IOException 
-	 * @throws DatabaseException 
+	 * @throws IOException
+	 * @throws DatabaseException
 	 */
 	public void cache(WikipediaConfiguration conf, ProgressTracker tracker) throws DatabaseException, IOException {
 
@@ -419,14 +419,14 @@ public abstract class WDatabase<K,V> {
 
 		initializeCache() ;
 
-		if (tracker == null) 
+		if (tracker == null)
 			tracker = new ProgressTracker(1, WDatabase.class) ;
 
 		tracker.startTask(db.count(), "caching " + name + " database") ;
 
 		//first, try caching from file
 		if (conf.getDatabaseDirectory() != null) {
-			File dataFile = new File(conf.getDatabaseDirectory() + File.separator + name + ".csv") ; 
+			File dataFile = new File(conf.getDatabaseDirectory() + File.separator + name + ".csv") ;
 
 			if (dataFile.canRead()) {
 
@@ -454,7 +454,7 @@ public abstract class WDatabase<K,V> {
 					tracker.update(lineNum) ;
 				}
 
-				input.close();	
+				input.close();
 				finalizeCache() ;
 
 				return;

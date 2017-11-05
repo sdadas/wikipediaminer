@@ -739,14 +739,13 @@ public class WEnvironment  {
 		
 		env.close();
 		
-//		TextProcessor tp = conf.getDefaultTextProcessor() ;
-//		if (tp != null) {
-//			File tmpDir = new File(conf.getDataDirectory() + File.separator + "tmp" + tp.getName()) ;
-//			tmpDir.mkdir() ;
-//			tmpDir.deleteOnExit() ;
-//			
-//			prepareTextProcessor(tp, conf, tmpDir, overwrite, 5) ;
-//		}
+		TextProcessor tp = conf.getDefaultTextProcessor() ;
+		if (tp != null) {
+			File tmpDir = new File(conf.getDataDirectory() + File.separator + "tmp" + tp.getName()) ;
+			tmpDir.mkdir() ;
+			tmpDir.deleteOnExit() ;
+			prepareTextProcessor(tp, conf, tmpDir, overwrite, 5) ;
+		}
 	}
 	
 	/**

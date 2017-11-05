@@ -1,6 +1,7 @@
 package org.wikipedia.miner.model;
 
 
+import org.slf4j.LoggerFactory;
 import org.wikipedia.miner.db.WEnvironment;
 import org.wikipedia.miner.db.struct.DbLabel;
 import org.wikipedia.miner.db.struct.DbSenseForLabel;
@@ -251,13 +252,15 @@ public class Label {
 			DbLabel lbl = env.getDbLabel(textProcessor).retrieve(text) ;
 		
 			if (lbl == null) {
-				throw new Exception() ;
+				this.senses = new Sense[0];
+				detailsSet = true;
 			} else {
 				setDetails(lbl) ;
 			}
 		} catch (Exception e) {
-			this.senses = new Sense[0] ;
-			detailsSet = true ;
+			LoggerFactory.getLogger(Label.class).error("Error getting label details", e);
+			this.senses = new Sense[0];
+			detailsSet = true;
 		}
 	}
 	
