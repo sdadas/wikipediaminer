@@ -28,6 +28,7 @@
         <module>wikipedia-miner-core</module>
         <module>wikipedia-miner-extract</module>
         <module>wikipedia-miner-examples</module>
+        <module>wikipedia-miner-microservice</module>
     </modules>
 
     <repositories>

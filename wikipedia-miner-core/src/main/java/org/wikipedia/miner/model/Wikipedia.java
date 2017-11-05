@@ -19,6 +19,7 @@
 
 package org.wikipedia.miner.model;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ import com.sleepycat.je.EnvironmentLockedException;
 /**
  * Represents a single dump or instance of Wikipedia
  */
-public class Wikipedia {
+public class Wikipedia implements Closeable {
 
 	private WEnvironment env ;
 
