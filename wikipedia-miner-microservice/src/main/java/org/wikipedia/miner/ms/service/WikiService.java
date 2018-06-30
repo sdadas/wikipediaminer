@@ -2,8 +2,8 @@ package org.wikipedia.miner.ms.service;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Service;
 import org.wikipedia.miner.annotation.*;
 import org.wikipedia.miner.annotation.preprocessing.DocumentPreprocessor;
@@ -12,6 +12,7 @@ import org.wikipedia.miner.annotation.preprocessing.WikiPreprocessor;
 import org.wikipedia.miner.annotation.tagging.DocumentTagger;
 import org.wikipedia.miner.annotation.tagging.WikiTagger;
 import org.wikipedia.miner.annotation.weighting.LinkDetector;
+import org.wikipedia.miner.db.WEnvironment;
 import org.wikipedia.miner.model.Wikipedia;
 import org.wikipedia.miner.ms.model.*;
 import org.wikipedia.miner.ms.ner.NerSenseSelectionStrategy;
@@ -22,6 +23,7 @@ import org.wikipedia.miner.util.config.WikiPaths;
 
 import javax.annotation.PreDestroy;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -49,11 +51,28 @@ public class WikiService {
     private PolimorfDictionary polimorf;
 
     @Autowired
-    public WikiService(ApplicationArguments args) throws Exception {
-        this.wiki = args.getOptionValues("wiki").get(0);
-        WikipediaConfiguration conf = new WikipediaConfiguration(WikiPaths.findConfig(this.wiki)) ;
+    public WikiService() throws Exception {
+        this.wiki = ObjectUtils.firstNonNull(System.getenv("WIKI_PATH"), System.getProperty("wiki.path"));
+        if(StringUtils.isBlank(this.wiki)) {
+            throw new IllegalArgumentException("Please provide wiki option i.e. -Dwiki.path=enwiki");
+        }
+        WikipediaConfiguration conf = new WikipediaConfiguration(WikiPaths.findConfig(this.wiki));
+        buildEnvironment(conf);
         this.wikipedia = new Wikipedia(conf, false);
         this.initTools();
+    }
+
+    private void buildEnvironment(WikipediaConfiguration conf) throws Exception {
+        if (conf.getDatabaseDirectory().exists()) {
+            return;
+        }
+        if (conf.getDataDirectory() == null || !conf.getDataDirectory().isDirectory()) {
+            throw new IOException("Data directory not valid at " + conf.getDatabaseDirectory().getAbsolutePath());
+        }
+        System.setProperty("entityExpansionLimit", "2147480000");
+        System.setProperty("totalEntitySizeLimit", "2147480000");
+        System.setProperty("jdk.xml.totalEntitySizeLimit", "2147480000");
+        WEnvironment.buildEnvironment(conf, conf.getDataDirectory(), false) ;
     }
 
     private void initTools() throws Exception {

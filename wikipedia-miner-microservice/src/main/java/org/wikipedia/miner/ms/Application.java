@@ -9,16 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Sławomir Dadas
  */
 @SpringBootApplication
-public class Application implements ApplicationRunner {
+public class Application {
 
     public static void main(String [] args) {
         SpringApplication.run(Application.class, args);
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        if(!args.containsOption("wiki")) {
-            throw new IllegalArgumentException("Please provide wiki option i.e. --wiki=enwiki");
-        }
     }
 }

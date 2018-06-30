@@ -1,0 +1,14 @@
+FROM maven:3.5.4-jdk-8-alpine as BUILD
+
+COPY wikipedia-miner-core /usr/src/wikipediaminer/wikipedia-miner-core
+COPY wikipedia-miner-examples /usr/src/wikipediaminer/wikipedia-miner-examples
+COPY wikipedia-miner-extract /usr/src/wikipediaminer/wikipedia-miner-extract
+COPY wikipedia-miner-microservice /usr/src/wikipediaminer/wikipedia-miner-microservice
+COPY pom.xml /usr/src/wikipediaminer/pom.xml
+
+RUN mvn -f /usr/src/wikipediaminer/pom.xml -P bundle -DskipTests clean package
+
+FROM openjdk:8u171-jdk-alpine3.7
+
+COPY --from=BUILD /usr/src/wikipediaminer/wikipedia-miner-microservice/target/wikipedia-miner-microservice.jar ./wikipedia-miner-microservice.jar
+ENTRYPOINT ["java", "-jar", "-Xms512m", "-Xmx8192m", "wikipedia-miner-microservice.jar"]

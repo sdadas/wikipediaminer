@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  wikipedia_miner:
+    image: wikipedia_miner:latest
+    ports:
+      - '8081:8081'
+    environment:
+      - 'WIKI_HOME=/usr/data/'
+      - 'WIKI_PATH=plwiki'
+    volumes:
+      - ${DATA_MOUNT}:/usr/data/
