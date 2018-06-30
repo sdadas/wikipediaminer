@@ -1,21 +1,23 @@
 package org.wikipedia.miner.ms.ner;
 
-import javafx.scene.effect.SepiaTone;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
  * @author Sławomir Dadas
  */
 public class PolimorfDictionary {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PolimorfDictionary.class);
 
     private File polimorfPath;
 
@@ -28,6 +30,10 @@ public class PolimorfDictionary {
 
     private Set<String> loadPolimorf() throws IOException {
         Set<String> res = new HashSet<String>();
+        if(!polimorfPath.exists()) {
+            LOG.error("Polimorf dictionary not found on path {}, cancelling.", this.polimorfPath.getCanonicalPath());
+            return res;
+        }
         LineIterator iter = FileUtils.lineIterator(this.polimorfPath, "UTF-8");
         while(iter.hasNext()) {
             String line = iter.next();
