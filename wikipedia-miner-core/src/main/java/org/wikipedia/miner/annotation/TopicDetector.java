@@ -32,6 +32,7 @@ import org.wikipedia.miner.model.Page.PageType;
 import org.wikipedia.miner.util.*;
 import org.wikipedia.miner.util.NGrammer.NGramSpan;
 import org.wikipedia.miner.annotation.preprocessing.*;
+import org.wikipedia.miner.util.text.TextProcessor;
 
 /**
  * This class detects topics that occur in plain text, using Disambiguator to resolve ambiguous terms and phrases. 
@@ -57,6 +58,8 @@ public class TopicDetector {
 	private int maxTopicsForRelatedness = 25 ;
 	
 	private NGrammer nGrammer ;
+
+	private TextProcessor processor;
 	
 	
 	/**
@@ -75,6 +78,7 @@ public class TopicDetector {
 		
 		this.nGrammer = new NGrammer(wikipedia.getConfig().getSentenceDetector(), wikipedia.getConfig().getTokenizer()) ;
 		this.nGrammer.setMaxN(disambiguator.getMaxLabelLength()) ;
+		this.processor = wikipedia.getConfig().getDefaultTextProcessor();
 		
 		//TODO:Check caching 
 		/*
@@ -118,6 +122,7 @@ public class TopicDetector {
 
 		//Vector<String> sentences = ss.getSentences(doc.getPreprocessedText(), SentenceSplitter.MULTIPLE_NEWLINES) ;
 		Vector<TopicReference> references = getReferences(doc.getPreprocessedText()) ;
+		removeStopwords(references);
 		
 		Collection<Topic> temp = getTopics(references, doc.getContextText(), doc.getOriginalText().length(), rc).values() ;
 		calculateRelatedness(temp, rc) ;
@@ -129,6 +134,17 @@ public class TopicDetector {
 		}
 		
 		return topics ;
+	}
+
+	private void removeStopwords(Vector<TopicReference> input) {
+		Iterator<TopicReference> iter = input.iterator();
+		while(iter.hasNext()) {
+			TopicReference ref = iter.next();
+			String labelProcessed = this.processor.processText(ref.getLabel().getText());
+			if(this.wikipedia.getConfig().isStopword(labelProcessed)) {
+				iter.remove();
+			}
+		}
 	}
 	
 	/**
@@ -146,13 +162,30 @@ public class TopicDetector {
 			
 
 		//Vector<String> sentences = ss.getSentences(text, SentenceSplitter.MULTIPLE_NEWLINES) ;
-		Vector<TopicReference> references = getReferences(text) ;
+		Vector<TopicReference> references = getReferences(text);
+		removeStopwords(references);
 		
 		HashMap<Integer,Topic> topicsById = getTopics(references, "", text.length(), rc) ;
 
 		Collection<Topic> topics = topicsById.values() ;
 		calculateRelatedness(topics, rc) ;
 		
+		return topics ;
+	}
+
+	public Collection<Topic> getTopics(String text, RelatednessCache rc, SenseSelectionStrategy selectionStrategy) throws Exception {
+
+		if (rc == null)
+			rc = new RelatednessCache(disambiguator.getArticleComparer()) ;
+
+		Vector<TopicReference> references = getReferences(text);
+		removeStopwords(references);
+
+		HashMap<Integer,Topic> topicsById = getTopics(references, "", text.length(), rc, selectionStrategy) ;
+
+		Collection<Topic> topics = topicsById.values() ;
+		calculateRelatedness(topics, rc) ;
+
 		return topics ;
 	}
 	
@@ -220,10 +253,16 @@ public class TopicDetector {
 		}
 		return references ;
 	}
-	
-	private HashMap<Integer,Topic> getTopics(Vector<TopicReference> references, String contextText, int docLength, RelatednessCache cache) throws Exception{
+
+	private HashMap<Integer,Topic> getTopics(Vector<TopicReference> references, String contextText, int docLength, RelatednessCache cache) throws Exception {
+		return this.getTopics(references, contextText, docLength, cache, new MinProbabilitySenseSelectionStrategy());
+	}
+
+	private HashMap<Integer,Topic> getTopics(Vector<TopicReference> references, String contextText, int docLength,
+											 RelatednessCache cache, SenseSelectionStrategy selectionStrategy)
+			throws Exception {
 		HashMap<Integer,Topic> chosenTopics = new HashMap<Integer,Topic>() ;
-	
+
 		/*
 		// get context articles from unambiguous Labels
 		Vector<Label> unambigLabels = new Vector<Label>() ;
@@ -308,15 +347,15 @@ public class TopicDetector {
 
 					//System.out.println(" - sense " + sense + ", " + disambigProb) ;
 					
-					if (disambigProb > 0.1) {
-						// there is at least a chance that this is a valid sense for the link (there may be more than one)
-						
-						CachedSense vs = new CachedSense(sense.getId(), commonness, relatedness, disambigProb) ;
+
+					CachedSense vs = new CachedSense(sense.getId(), commonness, relatedness, disambigProb) ;
+					if(selectionStrategy.accept(ref, vs)) {
 						validSenses.add(vs) ;
 					}
+
 				}
 				Collections.sort(validSenses) ;
-				
+				selectionStrategy.transform(ref, validSenses);
 				
 				disambigCache.put(ref.getLabel().getText(), validSenses) ;
 			}
@@ -357,7 +396,7 @@ public class TopicDetector {
 	
 	
 
-	private class CachedSense implements Comparable<CachedSense>{
+	public static class CachedSense implements Comparable<CachedSense>{
 		
 		int id ;
 		double commonness ;
@@ -381,6 +420,55 @@ public class TopicDetector {
 		
 		public int compareTo(CachedSense sense) {
 			return -1 * Double.valueOf(disambigConfidence).compareTo(Double.valueOf(sense.disambigConfidence)) ;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public double getCommonness() {
+			return commonness;
+		}
+
+		public double getRelatedness() {
+			return relatedness;
+		}
+
+		public double getDisambigConfidence() {
+			return disambigConfidence;
+		}
+	}
+
+	class MinProbabilitySenseSelectionStrategy implements SenseSelectionStrategy {
+
+		@Override
+		public boolean accept(TopicReference ref, CachedSense sense) {
+			return sense.disambigConfidence > 0.1;
+		}
+
+		@Override
+		public List<CachedSense> transform(TopicReference ref, List<CachedSense> senses) {
+			return senses;
+		}
+	}
+
+	class TopNSenseSelectionStrategy implements SenseSelectionStrategy {
+
+		private int topN;
+
+		public TopNSenseSelectionStrategy(int topN) {
+			this.topN = topN;
+		}
+
+		@Override
+		public boolean accept(TopicReference ref, CachedSense sense) {
+			return true;
+		}
+
+		@Override
+		public List<CachedSense> transform(TopicReference ref, List<CachedSense> senses) {
+			int limit = Math.min(senses.size(), topN);
+			return senses.subList(0, limit);
 		}
 	}
 }

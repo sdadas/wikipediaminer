@@ -63,7 +63,7 @@ public class AnnotationWorkbench {
     }
 
     private void gatherArticleSets() throws IOException {
-        int[] sizes = {200, 100, 100};
+        int[] sizes = {2000, 100, 100};
 
         ArticleSet[] articleSets = new ArticleSetBuilder()
                 .setMinOutLinks(15)
