@@ -1,6 +1,8 @@
 package org.wikipedia.miner.ms.ner;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.wikipedia.miner.annotation.ArticleClassMapper;
 import org.wikipedia.miner.annotation.SenseSelectionStrategy;
 import org.wikipedia.miner.annotation.TopicDetector;
 import org.wikipedia.miner.annotation.TopicReference;
@@ -21,10 +23,13 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
 
     private final Set<Integer> startOfSentence;
 
-    public NerSenseSelectionStrategy(PolimorfDictionary dictionary, String text) {
+    private final ArticleClassMapper classMapper;
+
+    public NerSenseSelectionStrategy(ArticleClassMapper mapper, PolimorfDictionary dictionary, String text) {
         this.dict = dictionary;
         this.text = text;
         this.startOfSentence = startOfSequencePositions();
+        this.classMapper = mapper;
     }
 
     private Set<Integer> startOfSequencePositions() {
@@ -42,14 +47,28 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
     public boolean accept(TopicReference ref, TopicDetector.CachedSense sense) {
         Position pos = ref.getPosition();
         String fragment = text.substring(pos.getStart(), pos.getEnd());
-        if(StringUtils.isNumericSpace(fragment)) {
+        // ignore all short and numeric tokens
+        if(StringUtils.length(fragment) < 2 || StringUtils.isNumericSpace(fragment)) {
             return false;
         }
+        // if single word that is a person name i labelled as geogName or orgName
+        if(dict.isFirstName(fragment) && StringUtils.equals(WordUtils.capitalize(fragment), fragment)) {
+            String label = classMapper.idClass(sense.getId());
+            if(StringUtils.equals(label, "geogName") || StringUtils.equals(label, "orgName")) {
+                return false;
+            }
+        }
+        // if start of sentence, make first word lowercase
         if(startOfSentence.contains(pos.getStart())) {
             char[] chars = fragment.toCharArray();
-            chars[0] = Character.toLowerCase(chars[0]);
+            if(chars.length > 1 && Character.isUpperCase(chars[1])) {
+                // if word has more than one uppercase letter, leave it unchanged
+            } else {
+                chars[0] = Character.toLowerCase(chars[0]);
+            }
             fragment = new String(chars);
         }
+        // ignore all lowercase common words
         if(StringUtils.isAllLowerCase(fragment)) {
             String[] words = StringUtils.split(fragment);
             for (String word: words) {

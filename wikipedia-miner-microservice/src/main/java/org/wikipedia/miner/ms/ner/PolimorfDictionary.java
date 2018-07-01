@@ -23,16 +23,22 @@ public class PolimorfDictionary {
 
     private Set<String> commonWords;
 
+    private Set<String> firstNames;
+
+    private Set<String> lastNames;
+
     public PolimorfDictionary(File polimorfPath) throws IOException {
         this.polimorfPath = polimorfPath;
-        this.commonWords = loadPolimorf();
+        this.commonWords = new HashSet<String>();
+        this.firstNames = new HashSet<String>();
+        this.lastNames = new HashSet<String>();
+        loadPolimorf();
     }
 
-    private Set<String> loadPolimorf() throws IOException {
-        Set<String> res = new HashSet<String>();
+    private void loadPolimorf() throws IOException {
         if(!polimorfPath.exists()) {
             LOG.error("Polimorf dictionary not found on path {}, cancelling.", this.polimorfPath.getCanonicalPath());
-            return res;
+            return;
         }
         LineIterator iter = FileUtils.lineIterator(this.polimorfPath, "UTF-8");
         while(iter.hasNext()) {
@@ -41,15 +47,27 @@ public class PolimorfDictionary {
             Validate.isTrue(values.length == 4 || values.length == 3, "wrong line: " + line);
             String word = values[0];
             String label = values.length == 4 ? values[3] : "pospolita";
+            String lowerWord = StringUtils.lowerCase(word);
             if(label.equals("pospolita")) {
-                res.add(StringUtils.lowerCase(word));
+                this.commonWords.add(lowerWord);
+            } else if(label.equals("imię")) {
+                this.firstNames.add(lowerWord);
+            } else if(label.equals("nazwisko")) {
+                this.lastNames.add(lowerWord);
             }
         }
-        return res;
     }
 
 
     public boolean isCommonWord(String word) {
         return commonWords.contains(word.toLowerCase());
+    }
+
+    public boolean isFirstName(String word) {
+        return firstNames.contains(word.toLowerCase());
+    }
+
+    public boolean isLastName(String word) {
+        return lastNames.contains(word.toLowerCase());
     }
 }

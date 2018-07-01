@@ -54,4 +54,8 @@ public class ArticleClassMapper {
         int id = topic.getId();
         return mapping.get(id);
     }
+
+    public String idClass(int articleId) {
+        return mapping.get(articleId);
+    }
 }

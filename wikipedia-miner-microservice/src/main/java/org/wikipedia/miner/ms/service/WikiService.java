@@ -103,7 +103,7 @@ public class WikiService {
 
     public List<LabelledSpan> getNamedEntities(TextDoc input, boolean skipOther, boolean skipDuplicateLabels)
             throws Exception {
-        SenseSelectionStrategy selectionStrategy = new NerSenseSelectionStrategy(this.polimorf, input.getText());
+        SenseSelectionStrategy selectionStrategy = new NerSenseSelectionStrategy(mapper, polimorf, input.getText());
         Collection<Topic> topics = topicDetector.getTopics(input.getText(), null, selectionStrategy);
         Map<SpanPosition, LabelledSpan> res = new TreeMap<SpanPosition, LabelledSpan>();
         for (Topic topic: topics) {

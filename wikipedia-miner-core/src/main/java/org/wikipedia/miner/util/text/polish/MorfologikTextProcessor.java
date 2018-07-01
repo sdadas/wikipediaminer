@@ -30,6 +30,8 @@ public class MorfologikTextProcessor extends TextProcessor {
         Map<String, String> res = new HashMap<String, String>();
         res.put("się", "się");
         res.put("ale", "ale");
+        res.put("mam", "mieć");
+        res.put("mamy", "mieć");
         return res;
     }
 
