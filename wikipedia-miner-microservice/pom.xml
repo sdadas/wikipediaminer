@@ -77,7 +77,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>1.5.8.RELEASE</version>
+            <version>1.5.14.RELEASE</version>
         </dependency>
     </dependencies>
 

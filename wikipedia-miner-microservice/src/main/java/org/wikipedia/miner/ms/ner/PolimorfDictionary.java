@@ -39,8 +39,10 @@ public class PolimorfDictionary {
             String line = iter.next();
             String[] values = StringUtils.split(line, "\t");
             Validate.isTrue(values.length == 4 || values.length == 3, "wrong line: " + line);
-            if(values.length == 4 && values[3].equals("pospolita")) {
-                res.add(StringUtils.lowerCase(values[0]));
+            String word = values[0];
+            String label = values.length == 4 ? values[3] : "pospolita";
+            if(label.equals("pospolita")) {
+                res.add(StringUtils.lowerCase(word));
             }
         }
         return res;
