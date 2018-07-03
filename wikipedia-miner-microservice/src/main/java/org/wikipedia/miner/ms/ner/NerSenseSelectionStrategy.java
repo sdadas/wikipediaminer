@@ -8,9 +8,7 @@ import org.wikipedia.miner.annotation.TopicDetector;
 import org.wikipedia.miner.annotation.TopicReference;
 import org.wikipedia.miner.util.Position;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Sławomir Dadas
@@ -21,26 +19,12 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
 
     private final String text;
 
-    private final Set<Integer> startOfSentence;
-
     private final ArticleClassMapper classMapper;
 
     public NerSenseSelectionStrategy(ArticleClassMapper mapper, PolimorfDictionary dictionary, String text) {
         this.dict = dictionary;
         this.text = text;
-        this.startOfSentence = startOfSequencePositions();
         this.classMapper = mapper;
-    }
-
-    private Set<Integer> startOfSequencePositions() {
-        Set<Integer> res = new HashSet<Integer>();
-        res.add(0);
-        int pos = text.indexOf(". ");
-        while(pos >= 0) {
-            res.add(pos + 3);
-            pos = text.indexOf(". ", pos + 1);
-        }
-        return res;
     }
 
     @Override
@@ -59,7 +43,7 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
             }
         }
         // if start of sentence, make first word lowercase
-        if(startOfSentence.contains(pos.getStart())) {
+        if(pos.getStart() == 0 || (pos.getStart() >= 2 && text.charAt(pos.getStart() - 2) == '.')) {
             char[] chars = fragment.toCharArray();
             if(chars.length > 1 && Character.isUpperCase(chars[1])) {
                 // if word has more than one uppercase letter, leave it unchanged
