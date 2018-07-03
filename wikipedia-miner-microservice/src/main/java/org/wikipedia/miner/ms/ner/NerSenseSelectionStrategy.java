@@ -53,7 +53,7 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
             fragment = new String(chars);
         }
         // ignore all lowercase common words
-        if(StringUtils.isAllLowerCase(fragment)) {
+        if(isAllLowerSpace(fragment)) {
             String[] words = StringUtils.split(fragment);
             for (String word: words) {
                 if(!dict.isCommonWord(word)) return true;
@@ -62,6 +62,20 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
         } else {
             return true;
         }
+    }
+
+    public boolean isAllLowerSpace(final CharSequence cs) {
+        if (cs == null || StringUtils.isEmpty(cs)) {
+            return false;
+        }
+        final int sz = cs.length();
+        for (int i = 0; i < sz; i++) {
+            char c = cs.charAt(i);
+            if (Character.isLowerCase(c) == false && c != ' ') {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
