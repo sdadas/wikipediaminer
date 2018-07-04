@@ -80,7 +80,7 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
         final int sz = cs.length();
         for (int i = 0; i < sz; i++) {
             char c = cs.charAt(i);
-            if (Character.isLowerCase(c) == false && Character.isDigit(c) && c != ' ') {
+            if (!Character.isLowerCase(c) && !Character.isDigit(c) && c != ' ') {
                 return false;
             }
         }
