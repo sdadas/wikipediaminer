@@ -32,7 +32,7 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
         Position pos = ref.getPosition();
         String fragment = text.substring(pos.getStart(), pos.getEnd());
         // ignore all short and numeric tokens
-        if(StringUtils.length(fragment) < 2 || StringUtils.isNumericSpace(fragment)) {
+        if(StringUtils.length(fragment) < 2 || isProbableNumber(fragment)) {
             return false;
         }
         // if single word that is a person name i labelled as geogName or orgName
@@ -53,10 +53,10 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
             fragment = new String(chars);
         }
         // ignore all lowercase common words
-        if(isAllLowerSpace(fragment)) {
+        if(isAllLowerDigitSpace(fragment)) {
             String[] words = StringUtils.split(fragment);
             for (String word: words) {
-                if(!dict.isCommonWord(word)) return true;
+                if(!dict.isCommonWord(word) && !StringUtils.isNumeric(word)) return true;
             }
             return false;
         } else {
@@ -64,14 +64,23 @@ public class NerSenseSelectionStrategy implements SenseSelectionStrategy {
         }
     }
 
-    public boolean isAllLowerSpace(final CharSequence cs) {
+    public boolean isProbableNumber(CharSequence cs) {
+        if (cs == null || StringUtils.isEmpty(cs)) {
+            return false;
+        }
+        if(StringUtils.isNumericSpace(cs)) return true;
+        if(StringUtils.containsOnly("IVX") && StringUtils.length(cs) <= 3) return true;
+        return false;
+    }
+
+    public boolean isAllLowerDigitSpace(final CharSequence cs) {
         if (cs == null || StringUtils.isEmpty(cs)) {
             return false;
         }
         final int sz = cs.length();
         for (int i = 0; i < sz; i++) {
             char c = cs.charAt(i);
-            if (Character.isLowerCase(c) == false && c != ' ') {
+            if (Character.isLowerCase(c) == false && Character.isDigit(c) && c != ' ') {
                 return false;
             }
         }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ public class PolimorfDictionary {
         this.firstNames = new HashSet<String>();
         this.lastNames = new HashSet<String>();
         loadPolimorf();
+        initExtraCommonWords();
     }
 
     private void loadPolimorf() throws IOException {
@@ -56,6 +58,13 @@ public class PolimorfDictionary {
                 this.lastNames.add(lowerWord);
             }
         }
+    }
+
+    private void initExtraCommonWords() {
+        this.commonWords.addAll(Arrays.asList(
+            "nr", "dr", "mgr", "inż", "prof",
+            "w", "z", "od", "na", "nad", "i", "o", "a"
+        ));
     }
 
 
